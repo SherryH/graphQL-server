@@ -5,11 +5,14 @@ const { graphql, buildSchema } = require('graphql');
 // goal: when query 'foo', return 'bar'
 
 const schema = buildSchema(`
-  type Query {
+  type Video {
     id: ID,
     title: String,
     duration: Int,
     watched: Boolean
+  }
+  type Query {
+    video: Video
   }
   type Schema {
       query: Query
@@ -17,15 +20,23 @@ const schema = buildSchema(`
 `);
 
 const resolver = {
-  id: () => '1qaz',
-  title: () => 'bar',
-  duration: () => 120,
-  watched: () => true
+  video: () => ({
+    id: () => '1qaz',
+    title: () => 'bar',
+    duration: () => 120,
+    watched: () => true
+  })
 };
 
 // make a client query to call foo
 const query = `
-{id, title, duration, watched}
+{
+  video {
+    id,
+    duration,
+    watched
+  }
+}
 `;
 
 graphql(schema, query, resolver)

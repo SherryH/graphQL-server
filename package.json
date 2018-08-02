@@ -1,0 +1,22 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "Follow along https://egghead.io/courses/build-a-graphql-server to build a GraphQL server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SherryH/graphQL-server.git"
+  },
+  "author": "SherryH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SherryH/graphQL-server/issues"
+  },
+  "homepage": "https://github.com/SherryH/graphQL-server#readme",
+  "dependencies": {
+    "graphql": "^0.13.2"
+  }
+}

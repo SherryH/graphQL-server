@@ -1,7 +1,8 @@
-const { graphql, buildSchema } = require('graphql');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
 
-// if used in a server like express, a middleware is commonly used so that user defines and passes query from graphi browser
-// see server.js
+const app = express();
 
 const schema = buildSchema(`
   type Video {
@@ -43,17 +44,13 @@ const resolver = {
   videos
 };
 
-// make a client query to call foo
-const query = `
-{
-  videos {
-    id,
-    duration,
-    watched
-  }
-}
-`;
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+    rootValue: resolver
+  })
+);
 
-graphql(schema, query, resolver)
-  .then(response => console.log('foo:', JSON.stringify(response)))
-  .catch(error => console.log(error));
+app.listen(4000);

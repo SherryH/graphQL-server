@@ -1,24 +1,49 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
+const {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLString,
+  GraphQLBoolean,
+  GraphQLInt
+} = require('graphql');
 
 const app = express();
 
-const schema = buildSchema(`
-  type Video {
-    id: ID,
-    title: String,
-    duration: Int,
-    watched: Boolean
+const videoType = new GraphQLObjectType({
+  name: 'TheVideoQuery',
+  fields: {
+    id: { type: GraphQLID },
+    title: { type: GraphQLString },
+    duration: { type: GraphQLInt },
+    watched: { type: GraphQLBoolean }
   }
-  type Query {
-    video: Video
-    videos: [Video]
-  }
-  type Schema {
-      query: Query
+});
+
+const queryType = new GraphQLObjectType({
+  name: 'Query',
+  description: 'Root Query',
+  fields: {
+    video: {
+      type: videoType,
+      description: 'Video Query',
+      resolve: () =>
+        new Promise(resolve =>
+          resolve({
+            id: 'a',
+            title: 'server video',
+            duration: '60',
+            watched: true
+          })
+        )
     }
-`);
+  }
+});
+
+const schema = new GraphQLSchema({
+  query: queryType
+});
 
 const videoA = {
   id: 'a',
@@ -48,8 +73,7 @@ app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    graphiql: true,
-    rootValue: resolver
+    graphiql: true
   })
 );
 

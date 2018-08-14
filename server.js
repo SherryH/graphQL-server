@@ -3,13 +3,14 @@ const graphqlHTTP = require('express-graphql');
 const {
   GraphQLSchema,
   GraphQLNonNull,
+  GraphQLList,
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
   GraphQLBoolean,
   GraphQLInt
 } = require('graphql');
-const { getVideoById } = require('./data');
+const { getVideoById, getVideos } = require('./data');
 
 const app = express();
 
@@ -34,6 +35,10 @@ const queryType = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
       resolve: (_, args) => getVideoById(args.id)
+    },
+    videos: {
+      type: new GraphQLList(videoType),
+      resolve: getVideos
     }
   }
 });

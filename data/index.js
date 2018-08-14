@@ -11,12 +11,15 @@ const videoB = {
   duration: '30',
   watched: false
 };
+const videos = [videoA, videoB];
 
 const getVideoById = id =>
   new Promise(resolve => {
-    const videos = [videoA, videoB];
     const [video] = videos.filter(video => video.id === id);
     resolve(video);
   });
 
+const getVideos = () => new Promise(resolve => resolve(videos));
+
 exports.getVideoById = getVideoById;
+exports.getVideos = getVideos;
